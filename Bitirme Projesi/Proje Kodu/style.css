@@ -1,0 +1,625 @@
+/* Rexroth Renkleri */
+:root {
+    --primary-blue: #003366;
+    --light-blue: #0066cc;
+    --red: #cc0000;
+    --white: #ffffff;
+    --light-gray: #f5f5f5;
+    --dark-gray: #666666;
+    --success-green: #28a745;
+    --warning-orange: #ffc107;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--light-gray) 0%, var(--white) 100%);
+    min-height: 100vh;
+    color: var(--primary-blue);
+}
+
+/* Ekran Yönetimi */
+.screen {
+    display: none;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* Puan Gösterimi */
+.score-display {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-blue);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* Tanıtım Ekranı */
+.intro-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+}
+
+.intro-content {
+    text-align: center;
+    background: var(--white);
+    padding: 60px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 90%;
+}
+
+.intro-content h1 {
+    color: var(--primary-blue);
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.intro-description {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: var(--dark-gray);
+    margin-bottom: 40px;
+    text-align: justify;
+}
+
+.start-btn {
+    background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
+    color: var(--white);
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+}
+
+/* Ana Ekran */
+.main-container {
+    display: flex;
+    min-height: calc(100vh - 40px);
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 0;
+    background: var(--primary-blue);
+    color: var(--white);
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.sidebar.active {
+    width: 250px;
+}
+
+.menu-item {
+    padding: 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.3s ease;
+}
+
+.menu-item:hover {
+    background: var(--light-blue);
+}
+
+.menu-item.selected {
+    background: var(--light-blue);
+    font-weight: bold;
+}
+
+.main-content {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.option-card {
+    background: var(--white);
+    border: 2px solid var(--light-gray);
+    border-radius: 15px;
+    padding: 40px 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.option-card:hover {
+    border-color: var(--light-blue);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 102, 204, 0.2);
+}
+
+.option-card.selected {
+    background: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+.option-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: var(--primary-blue);
+}
+
+.option-card.selected h3 {
+    color: var(--white);
+}
+
+.option-card p {
+    color: var(--dark-gray);
+    font-size: 1.1em;
+}
+
+.option-card.selected p {
+    color: var(--light-gray);
+}
+
+/* Soru Konteyneri */
+.question-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.question-container h2 {
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    text-align: center;
+}
+
+.question-container p {
+    color: var(--dark-gray);
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+/* Arama Kutusu */
+.search-container {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.search-box {
+    display: flex;
+    background: var(--white);
+    border: 2px solid var(--light-gray);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+.search-box.drag-over {
+    border-color: var(--light-blue);
+    background: rgba(0, 102, 204, 0.1);
+}
+
+.search-box input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    font-size: 1.1em;
+    background: transparent;
+}
+
+.search-box input:focus {
+    outline: none;
+}
+
+.search-btn {
+    background: var(--light-blue);
+    color: var(--white);
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background 0.3s ease;
+}
+
+.search-btn:hover {
+    background: var(--primary-blue);
+}
+
+/* Sürüklenebilir Seçenekler */
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.draggable-option {
+    background: var(--light-blue);
+    color: var(--white);
+    padding: 15px 25px;
+    border-radius: 25px;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0, 102, 204, 0.3);
+}
+
+.draggable-option:hover {
+    background: var(--primary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4);
+}
+
+.draggable-option:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+.draggable-option.correct {
+    background: var(--success-green);
+    animation: correctAnswer 0.5s ease;
+}
+
+.draggable-option.incorrect {
+    background: var(--red);
+    animation: incorrectAnswer 0.5s ease;
+}
+
+@keyframes correctAnswer {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes incorrectAnswer {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
+
+/* SAP Arayüzü */
+.sap-interface {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.sap-interface h2 {
+    color: var(--primary-blue);
+    margin-bottom: 30px;
+    font-size: 2em;
+    text-align: center;
+    border-bottom: 2px solid var(--light-blue);
+    padding-bottom: 15px;
+}
+
+.form-container {
+    background: var(--light-gray);
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.form-row label {
+    font-weight: bold;
+    color: var(--primary-blue);
+    min-width: 120px;
+    font-size: 1.1em;
+}
+
+.input-drop-zone {
+    flex: 1;
+    position: relative;
+}
+
+.input-drop-zone input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--light-gray);
+    border-radius: 8px;
+    font-size: 1em;
+    background: var(--white);
+    transition: border-color 0.3s ease;
+}
+
+.input-drop-zone.drag-over {
+    border-color: var(--light-blue);
+    background: rgba(0, 102, 204, 0.1);
+}
+
+.input-drop-zone.drag-over input {
+    border-color: var(--light-blue);
+    background: rgba(0, 102, 204, 0.1);
+}
+
+.search-btn-sap {
+    background: var(--light-blue);
+    color: var(--white);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    margin-top: 20px;
+}
+
+.search-btn-sap:hover {
+    background: var(--primary-blue);
+}
+
+.drag-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* Seçim Alanı */
+.selection-area {
+    background: var(--light-gray);
+    border: 2px dashed var(--dark-gray);
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    margin: 30px 0;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    color: var(--dark-gray);
+    transition: all 0.3s ease;
+}
+
+.selection-area.drag-over {
+    border-color: var(--light-blue);
+    background: rgba(0, 102, 204, 0.1);
+    color: var(--light-blue);
+}
+
+.selection-area.has-selection {
+    background: var(--success-green);
+    color: var(--white);
+    border-color: var(--success-green);
+}
+
+/* Tebrikler Ekranı */
+.congratulations-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--success-green) 0%, var(--light-blue) 100%);
+}
+
+.congratulations-content {
+    text-align: center;
+    background: var(--white);
+    padding: 60px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+}
+
+.congratulations-content h1 {
+    color: var(--success-green);
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.congratulations-content h2 {
+    color: var(--primary-blue);
+    font-size: 1.8em;
+    margin-bottom: 30px;
+}
+
+.final-score {
+    background: var(--light-gray);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 30px 0;
+}
+
+.final-score h3 {
+    color: var(--primary-blue);
+    font-size: 1.5em;
+}
+
+.final-score span {
+    color: var(--success-green);
+    font-weight: bold;
+}
+
+.restart-btn {
+    background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
+    color: var(--white);
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+}
+
+.restart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .sidebar.active {
+        width: 100%;
+        height: auto;
+    }
+    
+    .main-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .form-row label {
+        min-width: auto;
+        margin-bottom: 10px;
+    }
+    
+    .options-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .draggable-option {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+    }
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.screen.active {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Geri Dönüş Butonu */
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s ease;
+    z-index: 1000;
+}
+
+.back-btn:hover {
+    background: var(--light-blue);
+}
+/* Tamamlanan modüller için stil eklentisi */
+.menu-item.completed {
+    background: var(--primary-blue) !important;
+    color: var(--white) !important;
+    position: relative;
+}
+
+.menu-item.completed::after {
+    content: "✓";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--success-green);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.option-card.completed {
+    background: var(--primary-blue) !important;
+    color: var(--white) !important;
+    border-color: var(--primary-blue) !important;
+    position: relative;
+}
+
+.option-card.completed::after {
+    content: "✓";
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: var(--success-green);
+    font-weight: bold;
+    font-size: 24px;
+    background: var(--white);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.option-card.completed h3 {
+    color: var(--white) !important;
+}
+
+.option-card.completed p {
+    color: var(--light-gray) !important;
+}

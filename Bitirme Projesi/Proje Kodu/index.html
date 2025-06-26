@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP DM Eğitim Modülü</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Header/Logo Stilleri */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .logo-left, .logo-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-container img {
+            height: 35px;
+            width: auto;
+            max-width: 120px;
+        }
+        
+        /* Puan Kutusu Stilleri */
+        .score-display {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: #e9f5ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            font-weight: bold;
+            color: #2c6aa0;
+            border: 1px solid #b3d4ff;
+        }
+        
+        /* Giriş Ekranı Stilleri */
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Giriş Ekranı Logoları */
+        .login-logos {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .login-logos img {
+            height: 35px;
+            width: auto;
+            max-width: 100px;
+        }
+        
+        .login-container h1 {
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--light-blue);
+            outline: none;
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+        }
+        
+        .error-message {
+            color: var(--red);
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        /* Responsive ayarlar */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 8px 15px;
+            }
+            
+            .header-container img {
+                height: 30px;
+                max-width: 100px;
+            }
+            
+            .score-display {
+                top: 60px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+            
+            .login-container {
+                padding: 30px 20px;
+                margin: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Giriş Ekranı -->
+    <div id="login-screen" class="screen active">
+        <div class="login-screen">
+            <div class="login-container">
+                <div class="login-logos">
+                    <img src="sap-logo.png" alt="SAP Logo">
+                    <img src="rexroth-logo.png" alt="Rexroth Logo">
+                </div>
+                <h1>SAP DM Eğitim Modülü</h1>
+                <div class="form-group">
+                    <label for="username">Kullanıcı Adı</label>
+                    <input type="text" id="username" placeholder="Kullanıcı adınızı girin">
+                </div>
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" placeholder="Şifrenizi girin">
+                </div>
+                <button class="login-btn" onclick="checkLogin()">Giriş Yap</button>
+                <div id="login-error" class="error-message">Hatalı kullanıcı adı veya şifre!</div>
+            </div>
+        </div>
+    </div>
+    <!-- Üst Logo Alanı -->
+    <header class="header-container" style="display: none;">
+        <div class="logo-left">
+            <img src="sap-logo.png" alt="SAP Logo">
+        </div>
+        <div class="logo-right">
+            <img src="rexroth-logo.png" alt="Rexroth Logo">
+        </div>
+    </header>
+
+    <!-- Tanıtım Ekranı -->
+    <div id="intro-screen" class="screen">
+        <div class="intro-container">
+            <div class="intro-content">
+                <h1>SAP DM Eğitim Modülü</h1>
+                <p class="intro-description">
+                    Bu sayfa bir MES çözümü olan SAP DM'in kullanılmasını kolaylaştırmak için kullanıcılar için hazırlanan bir alıştırma modülüdür.
+                </p>
+                <button class="start-btn" onclick="startTraining()">Eğitime Başla</button>
+            </div>
+        </div>
+    </div>
+    <!-- Ana Giriş Ekranı -->
+    <div id="main-screen" class="screen">
+        <div class="score-display">
+            <span>Puan: <span id="score">0</span></span>
+        </div>
+        
+        <div class="main-container">
+            <div class="sidebar" id="sidebar">
+                <div class="menu-item" data-screen="order-view">Sipariş Görüntüleme</div>
+                <div class="menu-item" data-screen="error-view">Hata Görüntüleme</div>
+                <div class="menu-item" data-screen="confirmation">Teyit Verme</div>
+            </div>
+            
+            <div class="main-content">
+                <div class="main-options">
+                    <div class="option-card" onclick="selectOption('order-view')">
+                        <h3>Sipariş Yönetimi</h3>
+                        <p>Siparişleri görüntüle ve yönet</p>
+                    </div>
+                    <div class="option-card" onclick="selectOption('error-view')">
+                        <h3>Hata Takibi</h3>
+                        <p>Sistem hatalarını izle</p>
+                    </div>
+                    <div class="option-card" onclick="selectOption('confirmation')">
+                        <h3>Teyit İşlemleri</h3>
+                        <p>İşlemleri onayla</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sipariş Görüntüleme Ekranı -->
+    <div id="order-view-screen" class="screen">
+        <div class="score-display">
+            <span>Puan: <span id="score-order">0</span></span>
+        </div>
+        
+        <div class="question-container">
+            <h2>Siparişleri görüntülemek için hangi seçeneği kullanmalısınız?</h2>
+            <p>Doğru seçeneği arama çubuğuna sürükleyip bırakın.</p>
+            
+            <div class="search-container">
+                <div class="search-box" id="search-drop-zone">
+                    <input type="text" placeholder="Arama yapın..." readonly>
+                    <button class="search-btn">🔍</button>
+                </div>
+            </div>
+            
+            <div class="options-container">
+                <div class="draggable-option" data-value="manage-orders" draggable="true">Manage Orders</div>
+                <div class="draggable-option" data-value="view-materials" draggable="true">View Materials</div>
+                <div class="draggable-option" data-value="system-config" draggable="true">System Configuration</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Orders Sayfası -->
+    <div id="manage-orders-screen" class="screen">
+        <div class="score-display">
+            <span>Puan: <span id="score-manage">0</span></span>
+        </div>
+        
+        <div class="sap-interface">
+            <h2>Manage Orders</h2>
+            <div class="form-container">
+                <div class="form-row">
+                    <label>Search:</label>
+                    <div class="input-drop-zone" data-field="search">
+                        <input type="text" placeholder="Sipariş no giriniz..." readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Work Center:</label>
+                    <div class="input-drop-zone" data-field="work-center">
+                        <input type="text" placeholder="Work center giriniz..." readonly>
+                    </div>
+                </div>
+                <button class="search-btn-sap" onclick="searchOrders()">Search</button>
+            </div>
+            
+            <div class="drag-options">
+                <div class="draggable-option" data-value="17258615" draggable="true">17258615</div>
+                <div class="draggable-option" data-value="1558447-A" draggable="true">1558447-A</div>
+                <div class="draggable-option" data-value="12345678" draggable="true">1234</div>
+                <div class="draggable-option" data-value="9876543-B" draggable="true">9876543-BA</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hata Görüntüleme Ekranı -->
+    <div id="error-view-screen" class="screen">
+        <div class="score-display">
+            <span>Puan: <span id="score-error">0</span></span>
+        </div>
+        
+        <div class="question-container">
+            <h2>Siparişlerin adımlarındaki hatalar görüntülenmek istenirse hangi ekran aratılmalı?</h2>
+            
+            <div class="search-container">
+                <div class="search-box" id="error-search-drop-zone">
+                    <input type="text" placeholder="Arama yapın..." readonly>
+                    <button class="search-btn">🔍</button>
+                </div>
+            </div>
+            
+            <div class="options-container">
+                <div class="draggable-option" data-value="manage-alerts" draggable="true">Manage Alerts</div>
+                <div class="draggable-option" data-value="integration-message" draggable="true">Integration Message Dashboard</div>
+                <div class="draggable-option" data-value="manage-materials" draggable="true">Manage Materials</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Integration Message Dashboard -->
+    <div id="integration-message-screen" class="screen">
+        <div class="score-display">
+            <span>Puan: <span id="score-integration">0</span></span>
+        </div>
+        
+        <div class="sap-interface">
+            <h2>Integration Message Dashboard</h2>
+            <div class="form-container">
+                <div class="form-row">
+                    <label>Search:</label>
+                    <div class="input-drop-zone" data-field="search">
+                        <input type="text" placeholder="Sipariş no..." readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Plant:</label>
+                    <div class="input-drop-zone" data-field="plant">
+                        <input type="text" placeholder="Plant..." readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Overall Status:</label>
+                    <div class="input-drop-zone" data-field="status">
+                        <input type="text" placeholder="Status..." readonly>
+                    </div>
+                </div>
+                <button class="search-btn-sap" onclick="searchIntegration()">Search</button>
+            </div>
+            
+            <div class="drag-options">
+                <div class="draggable-option" data-value="TR10" draggable="true">TR10</div>
+                <div class="draggable-option" data-value="17584741" draggable="true">17584741</div>
+                <div class="draggable-option" data-value="failed" draggable="true">Failed</div>
+                <div class="draggable-option" data-value="completed" draggable="true">Completed</div>
+                <div class="draggable-option" data-value="pending" draggable="true">Incomplete</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teyit Verme Ekranı -->
+    <div id="confirmation-screen" class="screen">
+        <div class="score-display">
+            <span>Puan: <span id="score-confirmation">0</span></span>
+        </div>
+        
+        <div class="question-container">
+            <h2>Teyit verme işlemleri için hangi ekranı kullanmalısınız?</h2>
+            
+            <div class="options-container">
+                <div class="draggable-option" data-value="manage-dashboards" draggable="true">Manage Dashboards</div>
+                <div class="draggable-option" data-value="line-monitor" draggable="true">Line Monitor POD</div>
+                <div class="draggable-option" data-value="work-center-pod" draggable="true">Work Center POD</div>
+            </div>
+            
+            <div class="selection-area" id="confirmation-selection">
+                <p>Seçiminizi buraya sürükleyin</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Work Center POD Ekranı -->
+    <div id="work-center-pod-screen" class="screen">
+        <div class="score-display">
+            <span>Puan: <span id="score-pod">0</span></span>
+        </div>
+        
+        <div class="sap-interface">
+            <h2>Work Center POD</h2>
+            <div class="form-container">
+                <div class="form-row">
+                    <label>SFC:</label>
+                    <div class="input-drop-zone" data-field="sfc">
+                        <input type="text" placeholder="SFC..." readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Work Center:</label>
+                    <div class="input-drop-zone" data-field="work-center">
+                        <input type="text" placeholder="Work Center..." readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Resource:</label>
+                    <div class="input-drop-zone" data-field="resource">
+                        <input type="text" placeholder="Resource..." readonly>
+                    </div>
+                </div>
+                <button class="search-btn-sap" onclick="searchPOD()">Search</button>
+            </div>
+            
+            <div class="drag-options">
+                <div class="draggable-option" data-value="17836915" draggable="true">17836915</div>
+                <div class="draggable-option" data-value="1724100-A" draggable="true">1724100-A</div>
+                <div class="draggable-option" data-value="1724100-A_17400025" draggable="true">1724100-A_17400025</div>
+                <div class="draggable-option" data-value="wrong-sfc" draggable="true">98765432_A</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tebrikler Ekranı -->
+    <div id="congratulations-screen" class="screen">
+        <div class="congratulations-container">
+            <div class="congratulations-content">
+                <h1>🎉 Tebrikler! 🎉</h1>
+                <h2>Eğitimi Başarıyla Tamamladınız!</h2>
+                <div class="final-score">
+                    <h3>Toplam Puanınız: <span id="final-score">0</span></h3>
+                </div>
+                <button class="restart-btn" onclick="restartTraining()">Yeniden Başla</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+    <script>
+        // Giriş kontrol fonksiyonu
+        function checkLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('login-error');
+            
+            if (username === 'admin' && password === 'admin') {
+                // Giriş başarılı
+                errorElement.style.display = 'none';
+                document.querySelector('.header-container').style.display = 'flex';
+                showScreen('intro-screen');
+            } else {
+                // Giriş başarısız
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        // Enter tuşu ile giriş yapma
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkLogin();
+            }
+        });
+        
+        // Diğer fonksiyonlar aynı şekilde devam eder...
+        function startTraining() {
+            showScreen('main-screen');
+            updateScoreDisplays();
+        }
+        
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            currentScreen = screenId;
+            
+            if (screenId === 'congratulations-screen') {
+                updateFinalScore();
+            }
+            
+            addBackButton();
+        }
+    </script>
+</body>
+</html>
