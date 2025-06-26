@@ -1,6 +1,5 @@
-# SAP DM Eğitim Modülü
+# SAP ERP KULLANICI EĞİTİMİ VE SİMÜLASYON MODÜLÜ
 
-![SAP Logo](./assets/sap-logo.png) ![Rexroth Logo](./assets/rexroth-logo.png)
 
 ## 📌 Proje Tanımı
 
